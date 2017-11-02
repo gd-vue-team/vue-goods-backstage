@@ -7,7 +7,7 @@
         <span class="sidebar-title-text inline-block">{{item.name}}</span>
       </div>
       <ul class="sidebar-nav-ul" :style="`max-height:${item.maxHeight}px`">
-        <li class="nav-item" :class="{'nav-item-checked':childItem.link==$route.meta.sidebarLink}"
+        <li class="nav-item" :class="{'nav-item-checked':childItem.link==$route.fullPath}"
             v-for="(childItem,cldIndex) in item.subMenu" @click="goToUrl(childItem)"
             :key="`sidebar.${index}.nav.${cldIndex}`">
           {{childItem.name}}
@@ -72,7 +72,7 @@
             this.menuJson[index].maxHeight = hh1 > hh2 ? hh2 : hh1
           }
           this.menuJson[index].isOpen = true
-          this.goToUrl(item)
+          if (this.$route.meta.sidebarLink !== item.link) this.goToUrl(item)
           this.menuIndex = index
         }
       },
