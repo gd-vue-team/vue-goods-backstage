@@ -1,4 +1,7 @@
 import businessList from './business-list.vue'
+import businessType from './business-type.vue'
+import businessDetail from './bus-detial.vue'
+import businessAddEdit from './bus-add-edit.vue'
 
 const routes = [
   {
@@ -13,7 +16,7 @@ const routes = [
   {
     path: 'add',
     name: 'businessAdd',
-    component: businessList,
+    component: businessAddEdit,
     meta: {
       title: '添加商家',
       sidebarLink: '/business/list'
@@ -21,8 +24,8 @@ const routes = [
   },
   {
     path: 'edit/:id',
-    name: 'businessAdd',
-    component: businessList,
+    name: 'businessEdit',
+    component: businessAddEdit,
     meta: {
       title: '修改商家',
       sidebarLink: '/business/list'
@@ -30,8 +33,8 @@ const routes = [
   },
   {
     path: 'detail/:id',
-    name: 'businessAdd',
-    component: businessList,
+    name: 'businessDetail',
+    component: businessDetail,
     meta: {
       title: '商家详情',
       sidebarLink: '/business/list'
@@ -39,8 +42,8 @@ const routes = [
   },
   {
     path: 'type',
-    name: 'businessAdd',
-    component: businessList,
+    name: 'businessType',
+    component: businessType,
     meta: {
       title: '商家详情',
       sidebarLink: '/business/list'
