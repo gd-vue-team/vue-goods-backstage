@@ -42,7 +42,7 @@
         label="状态"
         width="80">
         <template scope="scope">
-          {{scope.row.state == 1 ? '启用' : '禁用'}}
+          {{scope.row.state? '启用' : '禁用'}}
         </template>
       </el-table-column>
 
@@ -65,7 +65,7 @@
           </el-popover>
           <el-button
             size="mini"
-            @click="doEnableDisable(scope.row)"> {{scope.row.state == 0 ? '启用' : '禁用'}}
+            @click="doEnableDisable(scope.row)"> {{!scope.row.state ? '启用' : '禁用'}}
           </el-button>
           <el-button
             size="mini"
@@ -101,16 +101,16 @@
         totalNumber: 100,
         inputVal: '',
         tableData: [
-          { id: 10012321, businessName: 'ViVo手机卖家', createDate: '2016-05-02', address: '上海市普陀区金沙江路 1518 弄', state: 1 },
-          { id: 10012322, businessName: 'iphone手机卖家', createDate: '2016-05-02', address: '上海市普陀区金沙江路1518 弄', state: 1 },
-          { id: 10012333, businessName: '小米M手机卖家', createDate: '2016-05-02', address: '上海市普陀区金沙江路 1518 弄', state: 0 },
-          { id: 10015223, businessName: '华为手机卖家', createDate: '2016-05-02', address: '上海市普陀区金沙江路 1518 弄', state: 0 },
-          { id: 10012323, businessName: 'SNMSUNG手机卖家', createDate: '2016-05-02', address: '上海市普陀区金沙路1518 弄', state: 1 },
-          { id: 10014323, businessName: '诺基亚手机卖家', createDate: '2016-05-02', address: '上海市普陀区金沙江路 1518 弄', state: 0 },
-          { id: 10042323, businessName: 'SONY手机卖家', createDate: '2016-05-02', address: '上海市普陀区金沙江路 1518 弄', state: 0 },
-          { id: 10016323, businessName: '中兴手机卖家', createDate: '2016-05-02', address: '上海市普陀区金沙江路 1518 弄', state: 0 },
-          { id: 10016323, businessName: 'OPPON手机卖家', createDate: '2016-05-02', address: '上海市普陀区金沙江路 1518 弄', state: 0 },
-          { id: 10016323, businessName: 'NUOIO手机卖家', createDate: '2016-05-02', address: '上海市普陀区金沙江路 1518 弄', state: 0 },
+          { id: 10012321, businessName: 'ViVo手机卖家', createDate: '2016-05-02', address: '上海市普陀区金沙江路 1518 弄', state: true },
+          { id: 10012322, businessName: 'iphone手机卖家', createDate: '2016-05-02', address: '上海市普陀区金沙江路1518 弄', state: false },
+          { id: 10012333, businessName: '小米M手机卖家', createDate: '2016-05-02', address: '上海市普陀区金沙江路 1518 弄', state: false },
+          { id: 10015223, businessName: '华为手机卖家', createDate: '2016-05-02', address: '上海市普陀区金沙江路 1518 弄', state: true },
+          { id: 10012323, businessName: 'SNMSUNG手机卖家', createDate: '2016-05-02', address: '上海市普陀区金沙路1518 弄', state: false },
+          { id: 10014323, businessName: '诺基亚手机卖家', createDate: '2016-05-02', address: '上海市普陀区金沙江路 1518 弄', state: true },
+          { id: 10042323, businessName: 'SONY手机卖家', createDate: '2016-05-02', address: '上海市普陀区金沙江路 1518 弄', state: true },
+          { id: 10016323, businessName: '中兴手机卖家', createDate: '2016-05-02', address: '上海市普陀区金沙江路 1518 弄', state: true },
+          { id: 10016323, businessName: 'OPPON手机卖家', createDate: '2016-05-02', address: '上海市普陀区金沙江路 1518 弄', state: false },
+          { id: 10016323, businessName: 'NUOIO手机卖家', createDate: '2016-05-02', address: '上海市普陀区金沙江路 1518 弄', state: false },
         ],
         multipleSelection: [],
         whiteList: [
@@ -145,8 +145,8 @@
        */
       doEnableDisable(obj) {
         this.log(obj)
-        obj.state = obj.state === 1 ? 0 : 1
-        this.$message.success(`${obj.state === 1 ? '启用' : '禁用'}成功`)
+        obj.state = !obj.state
+        this.$message.success(`${obj.state ? '启用' : '禁用'}成功`)
       },
       /**
        * 删除

@@ -23,13 +23,10 @@
 </script>
 <style lang="stylus" ref="stylesheet/stylus" scoped>
   .ml-area-title-bg {
-    margin-bottom: 20px
-    padding: 0 40px 20px 40px;
-    background: #fff;
-
+    padding: 0 0 0 20px;
     h1.ml-area-title-header {
       margin-bottom: 20px;
-      line-height: 70px;
+      line-height: 50px;
       border-bottom: 1px solid #d7dee1;
       font-size: 16px;
       color: #333
