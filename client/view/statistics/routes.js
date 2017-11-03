@@ -3,7 +3,7 @@ import statistics from './statistics.vue'
 const routes = [
   {
     path: 'info',
-    name: 'businessAdd',
+    name: 'statisticsInfo',
     component: statistics,
     meta: {
       title: '统计',

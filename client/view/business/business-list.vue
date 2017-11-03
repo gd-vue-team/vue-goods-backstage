@@ -1,110 +1,200 @@
 <template>
-  <zd-layout title="商家列表">
-    <zd-list-button>
-      <div class="inline-block input-search" slot="search">
-        <el-input placeholder="请输入内容" v-model="inputVal">
-          <div class="inline-block" slot="append" style="cursor: pointer">
-            <zd-icon icon="sousuo"></zd-icon>
-          </div>
-        </el-input>
-      </div>
-    </zd-list-button>
+  <ml-layout title="商家列表">
+    <div class="button-bar">
+      <el-input class="input-search" placeholder="请输入商家名称" v-model="search.keyWord" @keyup.native="doSearch">
+        <div class="inline-block pointer" slot="append" @click="doSearch">
+          <ml-icon icon="sousuo"></ml-icon>
+        </div>
+      </el-input>
+      <el-button type="primary" @click="$router.push('/business/add')">添加商家</el-button>
+    </div>
     <el-table
+      id="table"
       :data="tableData"
       border
       tooltip-effect="dark"
-      @selection-change="handleSelectionChange"
       style="width: 100%">
       <el-table-column
         type="index"
-        width="55">
+        label="序号"
+        width="65">
       </el-table-column>
       <el-table-column
-        prop="date"
-        label="日期"
-        width="180">
+        prop="id"
+        label="商家ID"
+        width="100">
       </el-table-column>
       <el-table-column
-        prop="name"
-        label="姓名"
-        width="180">
+        prop="businessName"
+        label="商家名称"
+        width="220">
+        <template scope="scope">
+          <a href="javascript:;" @click="toDoDetail(scope.row.id)" type="text">{{scope.row.businessName}}</a>
+        </template>
       </el-table-column>
+      <el-table-column
+        prop="createDate"
+        label="创建日期"
+        width="140">
+      </el-table-column>
+      <el-table-column
+        prop="createDate"
+        label="状态"
+        width="80">
+        <template scope="scope">
+          {{scope.row.state == 1 ? '启用' : '禁用'}}
+        </template>
+      </el-table-column>
+
       <el-table-column
         prop="address"
         label="地址">
       </el-table-column>
-      <el-table-column fixed="right" label="操作" width="120">
+      <el-table-column fixed="right" label="操作" width="170">
         <template scope="scope">
+          <el-popover placement="bottom"
+                      width="280"
+                      ref="delOpt">
+            <div class="common-pop-wrap">
+              <p class="pop-content center">删除后，此活动将无法恢复。确定删除？</p>
+              <div class="pop-bottom">
+                <el-button type="primary" @click="doDelete(scope.row.id)">确定</el-button>
+                <el-button @click="popoverClose">取消</el-button>
+              </div>
+            </div>
+          </el-popover>
           <el-button
             size="mini"
-            @click="handleEdit(scope.$index, scope.row)">编辑
+            @click="doEnableDisable(scope.row)"> {{scope.row.state == 0 ? '启用' : '禁用'}}
           </el-button>
           <el-button
             size="mini"
-            type="danger"
-            @click="handleDelete(scope.$index, scope.row)">删除
+            @click="toDoEdit(scope.row.id)">编辑
+          </el-button>
+          <el-button
+            size="mini"
+            type="danger" v-popover:delOpt>删除
           </el-button>
         </template>
       </el-table-column>
     </el-table>
     <div class="pagination-warp">
       <el-pagination
-        @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :page-sizes="[100, 200, 300, 400]"
-        :page-size="100"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="400">
+        :current-page.sync="search.currentPage"
+        :page-size="20"
+        layout="prev, pager, next, jumper"
+        :total="totalNumber">
       </el-pagination>
     </div>
-  </zd-layout>
+  </ml-layout>
 </template>
 <script type="text/babel">
   export default {
     data() {
       return {
+        searchKey: '/business/list',
+        search: {
+          keyWord: '',
+          currentPage: 4,
+        },
+        totalNumber: 100,
         inputVal: '',
-        currentPage: 4,
         tableData: [
-          { date: '2016-05-02', name: '王小虎', address: '上海市普陀区金沙江路 1518 弄' },
-          { date: '2016-05-04', name: '王小虎', address: '上海市普陀区金沙江路 1517 弄' },
-          { date: '2016-05-01', name: '王小虎', address: '上海市普陀区金沙江路 1519 弄' },
-          { date: '2016-05-03', name: '王小虎', address: '上海市普陀区金沙江路 1516 弄' },
-          { date: '2016-05-02', name: '王小虎', address: '上海市普陀区金沙江路 1518 弄' },
-          { date: '2016-05-04', name: '王小虎', address: '上海市普陀区金沙江路 1517 弄' },
-          { date: '2016-05-01', name: '王小虎', address: '上海市普陀区金沙江路 1519 弄' },
-          { date: '2016-05-03', name: '王小虎', address: '上海市普陀区金沙江路 1516 弄' },
-          { date: '2016-05-02', name: '王小虎', address: '上海市普陀区金沙江路 1518 弄' },
-          { date: '2016-05-04', name: '王小虎', address: '上海市普陀区金沙江路 1517 弄' },
+          { id: 10012321, businessName: 'ViVo手机卖家', createDate: '2016-05-02', address: '上海市普陀区金沙江路 1518 弄', state: 1 },
+          { id: 10012322, businessName: 'iphone手机卖家', createDate: '2016-05-02', address: '上海市普陀区金沙江路1518 弄', state: 1 },
+          { id: 10012333, businessName: '小米M手机卖家', createDate: '2016-05-02', address: '上海市普陀区金沙江路 1518 弄', state: 0 },
+          { id: 10015223, businessName: '华为手机卖家', createDate: '2016-05-02', address: '上海市普陀区金沙江路 1518 弄', state: 0 },
+          { id: 10012323, businessName: 'SNMSUNG手机卖家', createDate: '2016-05-02', address: '上海市普陀区金沙路1518 弄', state: 1 },
+          { id: 10014323, businessName: '诺基亚手机卖家', createDate: '2016-05-02', address: '上海市普陀区金沙江路 1518 弄', state: 0 },
+          { id: 10042323, businessName: 'SONY手机卖家', createDate: '2016-05-02', address: '上海市普陀区金沙江路 1518 弄', state: 0 },
+          { id: 10016323, businessName: '中兴手机卖家', createDate: '2016-05-02', address: '上海市普陀区金沙江路 1518 弄', state: 0 },
+          { id: 10016323, businessName: 'OPPON手机卖家', createDate: '2016-05-02', address: '上海市普陀区金沙江路 1518 弄', state: 0 },
+          { id: 10016323, businessName: 'NUOIO手机卖家', createDate: '2016-05-02', address: '上海市普陀区金沙江路 1518 弄', state: 0 },
         ],
         multipleSelection: [],
+        whiteList: [
+          '/business/edit/:id',
+          '/business/detail/:id',
+        ],
       }
     },
+    created() {
+      this.$storage.hyperChannel(this.whiteList, true, { key: this.searchKey, value: this.search })
+    },
     methods: {
-      handleSelectionChange(val) {
-        this.multipleSelection = val;
-      },
-      handleEdit(index, row) {
-        this.log(index, row);
-      },
-      handleDelete(index, row) {
-        this.log(index, row);
-      },
-      handleSizeChange(val) {
-        this.log(`每页 ${val} 条`);
-      },
       handleCurrentChange(val) {
-        this.log(`当前页: ${val}`);
+        this.log(`当前页: ${val}`)
+      },
+      /**
+       * popover 关闭
+       */
+      popoverClose() {
+        // 关闭 popover
+        global.document.getElementById('table').click()
+      },
+      /**
+       * 搜索
+       */
+      doSearch() {
+        this.log(this.search.keyWord)
+      },
+      /**
+       * 启用or禁用
+       * @param obj
+       */
+      doEnableDisable(obj) {
+        this.log(obj)
+        obj.state = obj.state === 1 ? 0 : 1
+        this.$message.success(`${obj.state === 1 ? '启用' : '禁用'}成功`)
+      },
+      /**
+       * 删除
+       * @param {String} id
+       */
+      doDelete(id) {
+        this.log(id)
+        this.$message.success('删除成功')
+      },
+      /**
+       * 去编辑
+       * @param {String} id
+       */
+      toDoEdit(id) {
+        this.$router.push(`/business/edit/${id}`)
+      },
+      /**
+       * 去详情
+       * @param {String} id
+       */
+      toDoDetail(id) {
+        this.$router.push(`/business/detail/${id}`)
       },
     }
   }
 </script>
 <style lang="stylus" ref="stylesheet/stylus" scoped>
-</style>
-<style lang="stylus" ref="stylesheet/stylus" scoped>
-  .input-search {
-    margin-right: 10px;
+  .common-pop-wrap {
+    .pop-content {
+      width: 220px;
+      margin: 10px auto 15px;
+      line-height: 25px;
+      &.center {
+        text-align: center;
+      }
+      &.left {
+        text-align: left;
+      }
+    }
+    .pop-bottom {
+      text-align: center
+      margin-bottom: 15px;
+      button {
+        margin-left: 10px;
+        margin-right: 10px;
+        width: 80px;
+      }
+    }
   }
 
   .text-right {

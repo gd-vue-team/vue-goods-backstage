@@ -45,8 +45,8 @@ const routes = [
     name: 'businessType',
     component: businessType,
     meta: {
-      title: '商家详情',
-      sidebarLink: '/business/list'
+      title: '分类管理',
+      sidebarLink: '/business/type'
     },
   },
 ]

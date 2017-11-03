@@ -4,7 +4,7 @@ export default {
       name: '商家管理', // 菜单名称
       icon: 'business', // 菜单图标
       level: 1, // 菜单级别
-      link: '/business/list',
+      link: '',
       subMenu: [// 子级菜单
         { name: '商家列表', link: '/business/list', level: 2, operate: ['add', 'edit', 'delete'] },
         { name: '分类管理', link: '/business/type', level: 2, operate: ['add', 'edit', 'delete'] },

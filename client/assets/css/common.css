@@ -31,6 +31,7 @@ ul, ol {
 
 a {
   text-decoration: none;
+  color: #20a0ff;
 }
 
 a:hover {
@@ -62,13 +63,13 @@ table {
   border-spacing: 0;
 }
 
+div {
+  box-sizing: border-box;
+}
+
 .inline-block {
   display: inline-block;
   vertical-align: middle;
-}
-
-div {
-  box-sizing: border-box;
 }
 
 .pagination-warp {
@@ -78,4 +79,17 @@ div {
 
 .padding-tb-20 {
   padding: 20px 0;
+}
+
+.button-bar {
+  margin-bottom: 10px;
+}
+
+.button-bar .input-search {
+  width: 220px;
+  margin-right: 10px;
+}
+
+.pointer {
+  cursor: pointer;
 }
