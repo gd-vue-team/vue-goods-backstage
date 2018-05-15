@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import elementUI from 'element-ui'
+// import mlUI from 'ml-ui'
+// import 'ml-ui/styles/index.css'
 // 引入http请求插件
 import http from '@config/utils/http'
 // 引入log日志插件
@@ -14,6 +16,7 @@ Vue.use(http)
 Vue.use(vueLogger)
 Vue.use(VueRouter)
 Vue.use(elementUI)
+// Vue.use(mlUI)
 
 Object.values(components).forEach(comp => {
   Vue.component('ml-' + comp.name, comp)

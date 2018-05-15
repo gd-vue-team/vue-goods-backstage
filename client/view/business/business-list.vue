@@ -122,6 +122,9 @@
     created() {
       this.$storage.hyperChannel(this.whiteList, true, { key: this.searchKey, value: this.search })
     },
+    mounted() {
+      this.$message({ message: '测试消息', type: 'info' })
+    },
     methods: {
       handleCurrentChange(val) {
         this.log(`当前页: ${val}`)
